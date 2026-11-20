@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai">
+<title>Secondment Countdown · Mon Wed Fri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f3f1f8; --card:#fffefe; --ink:#1b1a22; --muted:#77737f; --line:#e6e2ee;
+    --a1:#8b5cf6; --a2:#ec4899; --accent:#7c3aed; --accent-soft:#ede7fd;
+    --hol:#0d9488; --hol-soft:#d3f0ec;
+    --leave:#d97706; --leave-soft:#fdebc8;
+    --done:#e5e2ec;
+    --shadow:0 1px 2px rgba(30,20,60,.05), 0 14px 32px -18px rgba(30,20,60,.2);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#121016; --card:#1c1a22; --ink:#f2f0f7; --muted:#9b97a6; --line:#2b2833;
+      --a1:#a78bfa; --a2:#f472b6; --accent:#a78bfa; --accent-soft:#2a2142;
+      --hol:#5eead4; --hol-soft:#12332f;
+      --leave:#fbbf24; --leave-soft:#3d2d0c;
+      --done:#34303d;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 32px -18px rgba(0,0,0,.6);
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(760px 380px at 85% -80px, color-mix(in srgb, var(--a2) 13%, transparent), transparent),
+      radial-gradient(760px 380px at 10% -120px, color-mix(in srgb, var(--a1) 16%, transparent), transparent),
+      var(--bg);
+    min-height:100vh;
+  }
+  main{max-width:580px;margin:0 auto;padding:22px 16px 56px}
+  .num{font-variant-numeric:tabular-nums}
+
+  .rise{opacity:0;transform:translateY(12px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--d,0)*70ms)}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px}
+  .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  h1{font-size:24px;margin:4px 0 0;font-weight:800;letter-spacing:-.02em}
+  .clock{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:7px 12px;font-size:12px;font-weight:600;box-shadow:var(--shadow);white-space:nowrap}
+  .clock small{color:var(--muted);font-weight:600}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--done)}
+  .dot.on{background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:ping 2s infinite}
+  @keyframes ping{70%{box-shadow:0 0 0 7px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}
+
+  .hero{padding:26px 18px 20px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 260px at 50% 0%, color-mix(in srgb, var(--a1) 12%, transparent), transparent);pointer-events:none}
+  .ring{position:relative;width:min(290px,76vw);aspect-ratio:1;margin:0 auto}
+  .ring svg{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+  .ring .track{fill:none;stroke:var(--line);stroke-width:12}
+  .ring .prog{fill:none;stroke-width:12;stroke-linecap:round;filter:drop-shadow(0 4px 10px color-mix(in srgb, var(--a1) 40%, transparent))}
+  .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .big{font-size:clamp(62px,19vw,88px);font-weight:800;line-height:1;letter-spacing:-.045em;font-variant-numeric:tabular-nums;
+    background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .big .dec{font-size:.46em;letter-spacing:-.02em;font-weight:700;opacity:.9}
+  .big-label{margin-top:8px;font-weight:600;font-size:14px}
+  .hero-sub{margin-top:16px;font-size:13px;color:var(--muted);font-weight:500;min-height:18px}
+  .pills{display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .pill{background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:6px 12px;font-size:12px;font-weight:700}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 8px;text-align:center;box-shadow:var(--shadow)}
+  .stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .stat span{font-size:11px;color:var(--muted);font-weight:600}
+
+  .next{display:flex;align-items:center;gap:14px}
+  .badge{background:var(--hol-soft);color:var(--hol);border-radius:14px;min-width:62px;text-align:center;padding:12px 8px;font-weight:800;font-size:16px;font-variant-numeric:tabular-nums}
+  .next .t{font-weight:700;font-size:14px}
+  .next .d{color:var(--muted);font-size:12px;margin-top:2px}
+
+  h2{font-size:15px;margin:0 0 4px;font-weight:800;letter-spacing:-.01em}
+  .hint{font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.5}
+
+  ul{list-style:none;margin:0;padding:0}
+  li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px}
+  li:first-child{border-top:0}
+  li .w{color:var(--muted);font-size:12px;text-align:right}
+  li.gone{color:var(--muted)}
+  li.gone .nm{text-decoration:line-through}
+  li.reached .nm::before{content:"✓ ";color:var(--hol);font-weight:800}
+  .tag{font-size:11px;color:var(--muted);font-weight:600;margin-left:6px}
+
+  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;color:var(--muted);margin:2px 0 14px;font-weight:500}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:4px;margin-right:5px;vertical-align:-2px}
+  .month{margin-bottom:18px}
+  .mname{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:7px;letter-spacing:.02em}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .dow{font-size:10px;color:var(--muted);text-align:center;padding-bottom:2px;font-weight:600}
+  .dow.w{color:var(--accent)}
+  .day{position:relative;aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;border:0;background:transparent;color:var(--ink);font-family:inherit;padding:0;transition:transform .15s, background .2s}
+  .day.out{visibility:hidden}
+  .day.off{color:var(--muted);opacity:.5}
+  .day.work{background:var(--accent-soft);cursor:pointer}
+  .day.work:hover{transform:scale(1.1)}
+  .day.work:active{transform:scale(.94)}
+  .day.past{background:var(--done);color:var(--muted)}
+  .day.hol{background:var(--hol-soft);color:var(--hol);font-weight:800}
+  .day.hol.noeff{opacity:.5}
+  .day.leave{background:var(--leave-soft);color:var(--leave);font-weight:800;cursor:pointer}
+  .day.leave::before{content:"";position:absolute;left:22%;right:22%;top:50%;height:1.5px;background:currentColor;transform:rotate(-20deg);opacity:.8}
+  .day.last{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font-weight:800}
+  .day.today{box-shadow:inset 0 0 0 2px var(--ink);font-weight:800}
+  .day.today.pulse::before{content:"";position:absolute;inset:-3px;border-radius:12px;border:2px solid var(--ink);opacity:0;animation:pulse 2.4s ease-out infinite}
+  @keyframes pulse{0%{opacity:.5;transform:scale(.9)}100%{opacity:0;transform:scale(1.25)}}
+  .day.intro{animation:pop .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*5ms)}
+  @keyframes pop{from{opacity:0;transform:scale(.55)}}
+
+  button.reset{background:none;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:7px 12px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  button.reset:hover{color:var(--ink);border-color:var(--muted)}
+
+  .foot{font-size:11px;color:var(--muted);text-align:center;margin-top:20px;line-height:1.65}
+  .foot a{color:var(--muted)}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .rise{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="rise" style="--d:0">
+    <div>
+      <div class="eyebrow">Secondment · 20 Oct 2026 → 19 Apr 2027</div>
+      <h1>Working-day countdown</h1>
+    </div>
+    <div class="clock"><span class="dot" id="dot"></span><span class="num" id="clock">--:--:--</span><small>HKT</small></div>
+  </header>
+
+  <section class="card hero rise" style="--d:1">
+    <div class="ring">
+      <svg viewBox="0 0 240 240" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" style="stop-color:var(--a1)"/>
+            <stop offset="1" style="stop-color:var(--a2)"/>
+          </linearGradient>
+        </defs>
+        <circle class="track" cx="120" cy="120" r="104"/>
+        <circle class="prog" id="prog" cx="120" cy="120" r="104" stroke="url(#g)"/>
+      </svg>
+      <div class="center">
+        <div class="big" id="left">–</div>
+        <div class="big-label" id="leftLabel">working days to go</div>
+      </div>
+    </div>
+    <div class="hero-sub" id="leftSub"></div>
+    <div class="pills">
+      <span class="pill num" id="doneTxt"></span>
+      <span class="pill num" id="pctTxt"></span>
+    </div>
+  </section>
+
+  <div class="stats rise" style="--d:2">
+    <div class="stat"><b id="cal">–</b><span>calendar days</span></div>
+    <div class="stat"><b id="weeks">–</b><span>work weeks (3 days)</span></div>
+    <div class="stat"><b id="leaveN">0</b><span>leave days</span></div>
+  </div>
+
+  <section class="card next rise" style="--d:3" id="nextCard">
+    <div class="badge" id="nextIn">–</div>
+    <div>
+      <div class="t" id="nextName"></div>
+      <div class="d" id="nextDate"></div>
+    </div>
+  </section>
+
+  <section class="card rise" style="--d:4">
+    <h2>Milestones</h2>
+    <p class="hint">Based on the remaining Mon / Wed / Fri workdays, with leave taken out.</p>
+    <ul id="mile"></ul>
+  </section>
+
+  <section class="card rise" style="--d:5">
+    <h2>Calendar</h2>
+    <p class="hint">Tap an upcoming Mon, Wed or Fri to mark it as leave; tap again to undo.</p>
+    <div class="legend">
+      <span><i style="background:var(--accent-soft)"></i>Workday</span>
+      <span><i style="background:var(--hol-soft)"></i>HK holiday</span>
+      <span><i style="background:var(--leave-soft)"></i>Leave</span>
+      <span><i style="background:var(--done)"></i>Done</span>
+    </div>
+    <div id="months"></div>
+    <button class="reset" id="reset">Clear leave days</button>
+  </section>
+
+  <section class="card rise" style="--d:6">
+    <h2>Hong Kong general holidays</h2>
+    <p class="hint">Only holidays that land on a Monday, Wednesday or Friday reduce the count.</p>
+    <ul id="holList"></ul>
+  </section>
+
+  <p class="foot">
+    Counts Mondays, Wednesdays and Fridays, minus Hong Kong general holidays, minus any leave you mark. Today counts as a fraction of a 09:00–18:00 Hong Kong day, so the number ticks down as the day goes on.<br>
+    Source: <a href="https://www.gov.hk/en/about/abouthk/holiday/2027.htm">GovHK general holidays</a>.
+  </p>
+</main>
+
+<script>
+const START = "2026-10-20", END = "2027-04-19";
+const WORK_DOW = [1, 3, 5];            /* Mon, Wed, Fri */
+const WORK_START = 9, WORK_END = 18;
+
+/* Hong Kong general holidays */
+const HOLIDAYS = [
+  ["2026-12-25","Christmas Day"],
+  ["2026-12-26","First weekday after Christmas Day"],
+  ["2027-01-01","The first day of January"],
+  ["2027-02-06","Lunar New Year's Day"],
+  ["2027-02-08","Third day of Lunar New Year"],
+  ["2027-02-09","Fourth day of Lunar New Year"],
+  ["2027-03-26","Good Friday"],
+  ["2027-03-27","The day following Good Friday"],
+  ["2027-03-29","Easter Monday"],
+  ["2027-04-05","Ching Ming Festival"]
+];
+const HMAP = Object.fromEntries(HOLIDAYS);
+
+const $ = id => document.getElementById(id);
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const KEY = "secondment-mwf-leave-v1";
+
+let leave = new Set();
+try { leave = new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch(e){}
+const saveLeave = () => { try{ localStorage.setItem(KEY, JSON.stringify([...leave])); }catch(e){} };
+
+const toD = s => { const [y,m,d]=s.split("-").map(Number); return new Date(Date.UTC(y,m-1,d)); };
+const toS = d => d.toISOString().slice(0,10);
+const addDays = (d,n) => new Date(d.getTime()+n*86400000);
+const diffDays = (a,b) => Math.round((toD(a)-toD(b))/86400000);
+const fmt = (s,opt={weekday:"short",day:"numeric",month:"short",year:"numeric"}) =>
+  toD(s).toLocaleDateString("en-GB",{...opt,timeZone:"UTC"});
+const SHORT = {weekday:"short",day:"numeric",month:"short"};
+const isWorkDow = s => WORK_DOW.includes(toD(s).getUTCDay());
+const isWorkday = s => isWorkDow(s) && !HMAP[s] && !leave.has(s);
+
+function eachDay(a,b){ const out=[]; for(let d=toD(a); toS(d)<=b; d=addDays(d,1)) out.push(toS(d)); return out; }
+const allDays = () => eachDay(START,END);
+
+const hkFmt = new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Hong_Kong",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"});
+function hkNow(){
+  const o={}; hkFmt.formatToParts(new Date()).forEach(p=>o[p.type]=p.value);
+  return {date:`${o.year}-${o.month}-${o.day}`, h:+o.hour, m:+o.minute, s:+o.second};
+}
+const p2 = n => String(n).padStart(2,"0");
+
+function compute(){
+  const n = hkNow(), today = n.date;
+  const work = allDays().filter(isWorkday);
+  const total = work.length;
+  const todayIsWork = work.includes(today);
+  const hrs = n.h + n.m/60 + n.s/3600;
+  const frac = todayIsWork ? Math.min(1, Math.max(0, (WORK_END-hrs)/(WORK_END-WORK_START))) : 0;
+  const left = work.filter(s => s>today).length + frac;
+  return {n,today,work,total,left,todayIsWork};
+}
+
+function counter(el, render, onDraw){
+  let cur = 0, raf = 0;
+  const draw = () => { el.innerHTML = render(cur); if (onDraw) onDraw(cur); };
+  return {
+    jump(v){ cancelAnimationFrame(raf); cur = v; draw(); },
+    to(target, dur){
+      cancelAnimationFrame(raf);
+      if (reduced || !dur || Math.abs(target-cur) < 1e-9){ cur = target; draw(); return; }
+      const from = cur, t0 = performance.now();
+      const step = t => {
+        const p = Math.min(1, (t-t0)/dur), e = 1 - Math.pow(1-p, 3);
+        cur = from + (target-from)*e; draw();
+        if (p < 1) raf = requestAnimationFrame(step); else { cur = target; draw(); }
+      };
+      raf = requestAnimationFrame(step);
+    }
+  };
+}
+
+const R = 104, C = 2*Math.PI*R;
+const prog = $("prog");
+prog.style.strokeDasharray = C;
+prog.style.strokeDashoffset = C;
+let TOTAL = 1;
+
+function sync(v){
+  const done = Math.max(0, TOTAL - v);
+  const p = TOTAL ? Math.min(1, done/TOTAL) : 0;
+  prog.style.strokeDashoffset = C*(1-p);
+  $("doneTxt").textContent = done.toFixed(1) + " of " + TOTAL + " days done";
+  $("pctTxt").textContent = (p*100).toFixed(1) + "% complete";
+}
+const bigC = counter($("left"), v => {
+  const [i,d] = (Math.max(0, Math.round(v*10)/10)).toFixed(1).split(".");
+  return `${i}<span class="dec">.${d}</span>`;
+}, sync);
+const calC   = counter($("cal"),    v => String(Math.max(0, Math.round(v))));
+const weeksC = counter($("weeks"),  v => Math.max(0, v).toFixed(1));
+const leaveC = counter($("leaveN"), v => String(Math.round(v)));
+const nextC  = counter($("nextIn"), v => Math.round(v) <= 0 ? "Today" : Math.round(v) + "d");
+
+let first = true, lastToday = null;
+
+function update(dur){
+  const c = compute();
+  TOTAL = c.total;
+  lastToday = c.today;
+
+  const calTotal = diffDays(END, START) + 1;
+  const calLeft = c.today > END ? 0 : diffDays(END, c.today < START ? START : c.today) + 1;
+  const leaveCount = [...leave].filter(s => s>=START && s<=END).length;
+
+  if (first){ bigC.jump(c.total); calC.jump(calTotal); weeksC.jump(c.total/3); leaveC.jump(0); nextC.jump(0); }
+  bigC.to(c.left, dur);
+  calC.to(calLeft, dur);
+  weeksC.to(c.left/3, dur);
+  leaveC.to(leaveCount, dur);
+
+  $("leftLabel").textContent = Math.round(c.left*10)/10 === 1 ? "working day to go" : "working days to go";
+
+  let sub;
+  if (c.today > END) sub = "Secondment complete 🎉";
+  else if (c.today < START) sub = "Starts " + fmt(START);
+  else if (c.todayIsWork){
+    const idx = c.work.indexOf(c.today) + 1;
+    const st = c.n.h < WORK_START ? "day starts 09:00" : c.n.h >= WORK_END ? "done for today" : "in office hours";
+    sub = `Workday ${idx} of ${c.total} · ${st}`;
+  }
+  else sub = HMAP[c.today] ? "Hong Kong holiday today" : leave.has(c.today) ? "On leave today"
+           : isWorkDow(c.today) ? "Day off today" : "Not a work day · next: " + fmt((c.work.find(s => s>c.today) || END), SHORT);
+  $("leftSub").textContent = sub;
+
+  /* next HK holiday that actually lands on a work day */
+  const nc = $("nextCard");
+  const next = HOLIDAYS.find(([d]) => d >= c.today && d <= END && isWorkDow(d));
+  if (next){
+    nc.style.display = "";
+    const wdBefore = c.work.filter(s => s>=c.today && s<next[0]).length;
+    nextC.to(diffDays(next[0], c.today), dur);
+    $("nextName").textContent = "Next day off: " + next[1];
+    $("nextDate").textContent = fmt(next[0]) + " · " + wdBefore + " working day" + (wdBefore===1?"":"s") + " before it";
+  } else nc.style.display = "none";
+
+  first = false;
+}
+
+function renderLists(){
+  const c = compute();
+
+  const mile = $("mile"); mile.innerHTML = "";
+  [[.25,"Quarter of the way"],[.5,"Halfway"],[.75,"Three quarters"],[1,"Final working day"]].forEach(([p,name])=>{
+    const s = c.work[Math.max(0, Math.ceil(c.total*p)-1)]; if (!s) return;
+    const d = diffDays(s, c.today);
+    const li = document.createElement("li");
+    if (d < 0) li.className = "reached";
+    li.innerHTML = `<span><span class="nm">${name}</span><span class="tag">${Math.round(p*100)}%</span></span><span class="w">${fmt(s,SHORT)} · ${d<0?"reached":d===0?"today":"in "+d+"d"}</span>`;
+    mile.appendChild(li);
+  });
+
+  const ul = $("holList"); ul.innerHTML = "";
+  HOLIDAYS.forEach(([d,n])=>{
+    const li = document.createElement("li"); if (d < c.today) li.className = "gone";
+    const eff = isWorkDow(d);
+    li.innerHTML = `<span class="nm">${n}${eff?"":'<span class="tag">not a work day · no change</span>'}</span><span class="w">${fmt(d,SHORT)}</span>`;
+    ul.appendChild(li);
+  });
+}
+
+function renderCalendar(intro){
+  const today = hkNow().date;
+  const box = $("months"); box.innerHTML = "";
+  let y = 2026, m = 9, idx = 0;                      /* Oct 2026 → Apr 2027 */
+  while (y < 2027 || (y === 2027 && m <= 3)){
+    const wrap = document.createElement("div"); wrap.className = "month";
+    const first = new Date(Date.UTC(y,m,1));
+    wrap.innerHTML = `<div class="mname">${first.toLocaleDateString("en-GB",{month:"long",year:"numeric",timeZone:"UTC"})}</div>`;
+    const g = document.createElement("div"); g.className = "grid";
+    ["M","T","W","T","F","S","S"].forEach((l,i)=>{ const e=document.createElement("div"); e.className="dow"+([0,2,4].includes(i)?" w":""); e.textContent=l; g.appendChild(e); });
+    const offset = (first.getUTCDay()+6)%7;
+    for (let i=0;i<offset;i++){ const e=document.createElement("div"); e.className="day out"; g.appendChild(e); }
+    const dim = new Date(Date.UTC(y,m+1,0)).getUTCDate();
+    for (let d=1; d<=dim; d++){
+      const s = toS(new Date(Date.UTC(y,m,d)));
+      const b = document.createElement("button"); b.className = "day num"; b.textContent = d; b.type = "button";
+      const inRange = s >= START && s <= END;
+      const tips = [];
+      if (!inRange){ b.classList.add("off"); b.disabled = true; }
+      else if (HMAP[s]){
+        b.classList.add("hol"); b.disabled = true; tips.push("HK: " + HMAP[s]);
+        if (!isWorkDow(s)){ b.classList.add("noeff"); tips.push("not a work day, no change"); }
+      }
+      else if (!isWorkDow(s)){ b.classList.add("off"); b.disabled = true; }
+      else if (leave.has(s)){ b.classList.add("leave"); tips.push("Leave (tap to undo)"); }
+      else if (s < today){ b.classList.add("past"); b.disabled = true; }
+      else { b.classList.add(s === END ? "last" : "work"); tips.push("Tap to mark as leave"); }
+      if (s === today) b.classList.add("today", "pulse");
+      if (tips.length) b.title = tips.join(" · ");
+      if (intro){ b.classList.add("intro"); b.style.setProperty("--i", idx); }
+      idx++;
+      if (inRange && isWorkDow(s) && !HMAP[s] && (s >= today || leave.has(s))){
+        b.addEventListener("click", () => {
+          leave.has(s) ? leave.delete(s) : leave.add(s);
+          saveLeave(); renderCalendar(false); renderLists(); update(700);
+        });
+      }
+      g.appendChild(b);
+    }
+    wrap.appendChild(g); box.appendChild(wrap);
+    m++; if (m > 11){ m = 0; y++; }
+  }
+  if (intro) setTimeout(() => document.querySelectorAll(".day.intro").forEach(e => e.classList.remove("intro")), 2200);
+}
+
+$("reset").addEventListener("click", () => { leave.clear(); saveLeave(); renderCalendar(false); renderLists(); update(700); });
+
+function tickClock(){
+  const n = hkNow();
+  $("clock").textContent = `${p2(n.h)}:${p2(n.m)}:${p2(n.s)}`;
+  const wd = isWorkday(n.date) && n.date >= START && n.date <= END;
+  $("dot").classList.toggle("on", wd && n.h >= WORK_START && n.h < WORK_END);
+}
+function refresh(){
+  const today = hkNow().date;
+  if (today !== lastToday){ renderCalendar(false); renderLists(); }
+  update(600);
+}
+
+renderCalendar(true);
+renderLists();
+update(2400);
+tickClock();
+setInterval(tickClock, 1000);
+setInterval(refresh, 20000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+</script>
+</body>
+</html>
